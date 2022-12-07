@@ -32,6 +32,13 @@ const mod = (n, m) => {
     return ((n % m) + m) % m;
 }
 
+const shape_points = (elf, result) => {
+    const idx = shapes.indexOf(DECYPHER[elf])
+    const player_idx = mod((idx + RESULT_DIRECTIONS[result]), shapes.length)
+
+    return SHAPE_POINTS[shapes[player_idx]]
+}
+
 const pointCounting = async() => {
     const fileStream = fs.createReadStream('../input.txt')
 
@@ -48,13 +55,7 @@ const pointCounting = async() => {
 
         let [elf, result] = line.split(' ')
 
-        const idx = shapes.indexOf(DECYPHER[elf])
-
-        const player_idx = mod((idx + RESULT_DIRECTIONS[result]), shapes.length)
-
-        const shape_points = SHAPE_POINTS[shapes[player_idx]]
-
-        round_points += shape_points
+        round_points += shape_points(elf, result)
 
         round_points += RESULT_POINTS[result]
 
