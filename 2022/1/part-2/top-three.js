@@ -2,7 +2,7 @@ const fs = require('node:fs')
 const readline = require('node:readline')
 
 const topThree = async() => {
-    const fileStream = fs.createReadStream('input.txt')
+    const fileStream = fs.createReadStream('../input.txt')
 
     const rl = readline.createInterface({
         input: fileStream,
