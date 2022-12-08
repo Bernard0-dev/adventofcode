@@ -26,7 +26,7 @@ const calc_result_points = (elf, player) => {
 }
 
 const pointCounting = async() => {
-    const fileStream = fs.createReadStream('../input.txt')
+    const fileStream = fs.createReadStream('input.txt')
 
     const rl = readline.createInterface({
         input: fileStream,

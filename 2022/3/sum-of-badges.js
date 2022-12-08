@@ -28,7 +28,7 @@ const getDuplicates = (set, string) => {
 }
 
 const sumPriorities = async() => {
-    const fileStream = fs.createReadStream('../input.txt')
+    const fileStream = fs.createReadStream('input.txt')
 
     const rl = readline.createInterface({
         input: fileStream,

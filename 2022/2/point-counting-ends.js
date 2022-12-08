@@ -40,7 +40,7 @@ const shape_points = (elf, result) => {
 }
 
 const pointCounting = async() => {
-    const fileStream = fs.createReadStream('../input.txt')
+    const fileStream = fs.createReadStream('input.txt')
 
     const rl = readline.createInterface({
         input: fileStream,
