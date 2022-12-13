@@ -72,22 +72,19 @@ const calcMinSteps = async() => {
         row++
     }
 
-    let steps = 1
-
-    let start = matrix[0]
-    let position = start
+    let steps = 0
     let visited = []
 
-    let adjacents = getAdjacents(position, matrix)
-    let possiblePositions = getPossiblePositions(adjacents, position, visited)
+    let start = matrix[0]
+    let possiblePositions = [start]
 
     visited.push(start)
-    
+
     while (!possiblePositions.includes(objective)) {
         let newPossiblePositions = []
 
         for (let pos of possiblePositions) {
-            adjacents = getAdjacents(pos, matrix)
+            let adjacents = getAdjacents(pos, matrix)
             let positions = getPossiblePositions(adjacents, pos, visited)
             newPossiblePositions = concatUniqueItems(newPossiblePositions, positions)
         }
@@ -98,7 +95,6 @@ const calcMinSteps = async() => {
     }
 
     console.log(steps)
-
 }
 
 calcMinSteps()
