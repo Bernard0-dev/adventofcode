@@ -12,6 +12,3 @@ name = "part1"
 
 [[bin]]
 name = "part2"
-
-[[bin]]
-name = "tes"
