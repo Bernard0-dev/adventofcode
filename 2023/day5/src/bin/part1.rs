@@ -1,7 +1,21 @@
 use std::{fs::read_to_string, vec};
 
-// TODO create struct to hold range values for each map
-// {dest_start, dest_end, source_start, source_end}
+#[derive(Debug, Copy, Clone, Default)]
+struct Map {
+    source_start: usize,
+    source_end: usize,
+    dest_start: usize,
+    dest_end: usize,
+}
+
+impl Map {
+    pub fn is_empty(&self) -> bool {
+        return self.source_start == 0
+            && self.source_end == 0
+            && self.dest_start == 0
+            && self.dest_end == 0;
+    }
+}
 
 // TODO convert everything to integers
 
@@ -15,11 +29,11 @@ fn main() {
         .into();
 
     // TODO remove multiple collects
-    let maps: Vec<Vec<Vec<Vec<usize>>>> = lines[2..]
+    let maps: Vec<Vec<Map>> = lines[2..]
         .iter()
         .filter(|&line| !line.contains("map"))
         .map(|map| get_map_ranges(map))
-        .collect::<Vec<Vec<Vec<usize>>>>()
+        .collect::<Vec<Map>>()
         .split(|m| m.is_empty())
         .map(Vec::from)
         .collect();
@@ -36,6 +50,7 @@ fn main() {
         .map(|s| s.parse::<usize>().unwrap())
         .min()
         .unwrap();
+
     println!("{:?}", min_seed);
 }
 
@@ -49,10 +64,11 @@ fn read_lines(filename: &str) -> Vec<String> {
     return result;
 }
 
-fn get_map_ranges(map: &String) -> Vec<Vec<usize>> {
+fn get_map_ranges(map: &String) -> Map {
     if map == "" {
-        return vec![];
+        return Map::default();
     }
+
     let range_values: Vec<usize> = map
         .split(' ')
         .filter_map(|f| f.parse::<usize>().ok())
@@ -65,16 +81,25 @@ fn get_map_ranges(map: &String) -> Vec<Vec<usize>> {
     let into_range = vec![r1, r1 + length - 1];
     let from_range = vec![r2, r2 + length - 1];
 
-    return vec![from_range, into_range];
+    println!("{:?}", into_range);
+    println!("{:?}", from_range);
+
+    let map = Map {
+        source_start: from_range[0],
+        source_end: from_range[1],
+        dest_start: into_range[0],
+        dest_end: into_range[1],
+    };
+
+    return map;
 }
 
-fn map_value(seed: &String, map: &Vec<Vec<Vec<usize>>>) -> String {
-    for range in map {
+fn map_value(seed: &String, maps: &Vec<Map>) -> String {
+    for map in maps {
         let seed_int = seed.parse::<usize>().unwrap();
-        let source_range = &range[0];
-        let destination_range = &range[1];
-        if seed_int >= source_range[0] && seed_int <= source_range[1] {
-            return (seed_int - source_range[0] + destination_range[0]).to_string();
+
+        if seed_int >= map.source_start && seed_int <= map.source_end {
+            return (seed_int - map.source_start + map.dest_start).to_string();
         }
     }
     return seed.into();
